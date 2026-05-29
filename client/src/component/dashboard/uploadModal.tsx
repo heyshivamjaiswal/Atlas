@@ -14,6 +14,9 @@ import {
 import { FileText, Globe, Plus, Video } from 'lucide-react';
 
 import SourceCard from './SourceCard';
+import PdfUploadForm from './forms/PdfUploadForms';
+import WebsiteForm from './forms/WebsiteForm';
+import YoutubeForm from './forms/YouTubeForm';
 
 export default function UploadModal() {
   const [selectedSource, setSelectedSource] = useState<string | null>(null);
@@ -49,15 +52,9 @@ export default function UploadModal() {
             onClick={() => setSelectedSource('youtube')}
           />
         </div>
-        {selectedSource === 'pdf' && (
-          <div className="mt-6">PDF Upload Form</div>
-        )}
-        {selectedSource === 'website' && (
-          <div className="mt-6">Website URL Form</div>
-        )}
-        {selectedSource === 'youtube' && (
-          <div className="mt-6">YouTube URL Form</div>
-        )}
+        {selectedSource === 'pdf' && <PdfUploadForm />}
+        {selectedSource === 'website' && <WebsiteForm />}
+        {selectedSource === 'youtube' && <YoutubeForm />}
       </DialogContent>
     </Dialog>
   );
