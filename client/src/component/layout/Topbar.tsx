@@ -1,6 +1,6 @@
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Plus, Search } from 'lucide-react';
+import { Search } from 'lucide-react';
+import UploadModal from '../dashboard/uploadModal';
 
 export default function Topbar() {
   return (
@@ -16,11 +16,7 @@ export default function Topbar() {
           className="pl-25  bg-card"
         />
       </div>
-
-      <Button className="gap-2 bg-white text-black font-semibold">
-        <Plus size={16} />
-        Add sources
-      </Button>
+      <UploadModal />
     </header>
   );
 }

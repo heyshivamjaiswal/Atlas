@@ -1,8 +1,6 @@
-type prop = {
-  priority: 'high' | 'medium' | 'low';
-};
+import { PriorityType } from '@/types/document';
 
-export default function PriorityDot({ priority }: prop) {
+export default function PriorityDot({ priority }: { priority: PriorityType }) {
   const colors = {
     high: 'bg-red-500',
     medium: 'bg-orange-500',
