@@ -23,6 +23,10 @@ export default function UploadModal() {
   const [youtubeUrl, setYoutubeUrl] = useState('');
   const [file, setFile] = useState<File | null>(null);
 
+  function handleSubit() {
+    console.log({ source: selectedSource, websiteUrl, youtubeUrl, file });
+  }
+
   const [selectedSource, setSelectedSource] = useState<string | null>(null);
   return (
     <Dialog>
@@ -59,11 +63,22 @@ export default function UploadModal() {
         {selectedSource === 'pdf' && (
           <PdfUploadForm file={file} setFile={setFile} />
         )}
+
         {selectedSource === 'website' && (
           <WebsiteForm url={websiteUrl} setUrl={setWebsiteUrl} />
         )}
+
         {selectedSource === 'youtube' && (
           <YoutubeForm videoUrl={youtubeUrl} setVideoUrl={setYoutubeUrl} />
+        )}
+
+        {selectedSource && (
+          <Button
+            className="mt-6 w-full bg-white text-black "
+            onClick={handleSubit}
+          >
+            Submit Source
+          </Button>
         )}
       </DialogContent>
     </Dialog>

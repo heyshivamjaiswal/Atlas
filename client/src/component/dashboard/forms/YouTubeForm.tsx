@@ -22,9 +22,6 @@ export default function YoutubeForm({ videoUrl, setVideoUrl }: Props) {
         onChange={(e) => setVideoUrl(e.target.value)}
         placeholder="http://youtube.com/watch?v=..."
       />
-      <Button className="bg-white text-black" onClick={handleSubmit}>
-        Add Video
-      </Button>
     </div>
   );
 }

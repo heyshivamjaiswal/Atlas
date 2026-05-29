@@ -20,9 +20,6 @@ export default function WebsiteForm({ url, setUrl }: props) {
         onChange={(e) => setUrl(e.target.value)}
         placeholder="http://nextjs.org/docs"
       />
-      <Button className="bg-white text-black" onClick={handleSubmit}>
-        Add Website
-      </Button>
     </div>
   );
 }

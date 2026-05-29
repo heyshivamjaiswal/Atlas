@@ -32,9 +32,6 @@ export default function PdfUploadForm({ file, setFile }: Props) {
           onChange={(e) => setFile(e.target.files?.[0] ?? null)}
         />
       </label>
-      <Button className="bg-white text-black" onClick={handleSubmit}>
-        Upload pdf
-      </Button>
     </div>
   );
 }

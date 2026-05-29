@@ -31,25 +31,25 @@ export default function Sidebar() {
 
           <div className="space-y-1">
             <SidebarItem
-              href="/"
+              href="/dashboard"
               icon={<LayoutGrid size={18} />}
               label="All sources"
             />
 
             <SidebarItem
-              href="/pdfs"
+              href="/dashboard/pdfs"
               icon={<FileText size={18} />}
               label="PDFs"
             />
 
             <SidebarItem
-              href="/web"
+              href="/dashboard/web"
               icon={<Globe size={18} />}
               label="Websites"
             />
 
             <SidebarItem
-              href="/videos"
+              href="/dashboard/videos"
               icon={<Video size={18} />}
               label="videos"
             />
@@ -60,19 +60,19 @@ export default function Sidebar() {
         <div className="mt-10">
           <p className="text-xs uppercase text-muted mb-4">Workspace</p>
           <SidebarItem
-            href="/starred"
+            href="/dashboard/starred"
             icon={<Star size={18} />}
             label="Starred"
           />
 
           <SidebarItem
-            href="/archive"
+            href="/dashboard/archive"
             icon={<Archive size={18} />}
             label="Archive"
           />
 
           <SidebarItem
-            href="/settings"
+            href="/dashboard/settings"
             icon={<Settings size={18} />}
             label="settings"
           />

@@ -21,7 +21,7 @@ export default function Document({
   description,
 }: Documentprops) {
   return (
-    <Link href={`/document/${id}`}>
+    <Link href={`/dashboard/document/${id}`}>
       <Card className="bg-red border-border p-5 hover:border-zinc-600 cursor-pointer">
         <div className="flex items-start justify-between">
           <div className="space-y-3">
