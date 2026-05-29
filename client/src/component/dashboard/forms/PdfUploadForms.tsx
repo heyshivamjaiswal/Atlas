@@ -1,11 +1,14 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { useState } from 'react';
 
-export default function PdfUploadForm() {
-  const [file, setFile] = useState<File | null>(null);
+type Props = {
+  file: File | null;
 
+  setFile: React.Dispatch<React.SetStateAction<File | null>>;
+};
+
+export default function PdfUploadForm({ file, setFile }: Props) {
   function handleSubmit() {
     console.log(file);
   }

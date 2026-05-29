@@ -19,6 +19,10 @@ import WebsiteForm from './forms/WebsiteForm';
 import YoutubeForm from './forms/YouTubeForm';
 
 export default function UploadModal() {
+  const [websiteUrl, setWebsiteUrl] = useState('');
+  const [youtubeUrl, setYoutubeUrl] = useState('');
+  const [file, setFile] = useState<File | null>(null);
+
   const [selectedSource, setSelectedSource] = useState<string | null>(null);
   return (
     <Dialog>
@@ -52,9 +56,15 @@ export default function UploadModal() {
             onClick={() => setSelectedSource('youtube')}
           />
         </div>
-        {selectedSource === 'pdf' && <PdfUploadForm />}
-        {selectedSource === 'website' && <WebsiteForm />}
-        {selectedSource === 'youtube' && <YoutubeForm />}
+        {selectedSource === 'pdf' && (
+          <PdfUploadForm file={file} setFile={setFile} />
+        )}
+        {selectedSource === 'website' && (
+          <WebsiteForm url={websiteUrl} setUrl={setWebsiteUrl} />
+        )}
+        {selectedSource === 'youtube' && (
+          <YoutubeForm videoUrl={youtubeUrl} setVideoUrl={setYoutubeUrl} />
+        )}
       </DialogContent>
     </Dialog>
   );

@@ -1,9 +1,15 @@
+'use client';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useState } from 'react';
 
-export default function YoutubeForm() {
-  const [videoUrl, setVideoUrl] = useState('');
+type Props = {
+  videoUrl: string;
+  setVideoUrl: React.Dispatch<React.SetStateAction<string>>;
+};
+
+export default function YoutubeForm({ videoUrl, setVideoUrl }: Props) {
+  //   const [videoUrl, setVideoUrl] = useState('');
 
   function handleSubmit() {
     console.log(videoUrl);

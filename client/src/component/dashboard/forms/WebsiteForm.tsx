@@ -1,10 +1,14 @@
+'use client';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useState } from 'react';
 
-export default function WebsiteForm() {
-  const [url, setUrl] = useState('');
+type props = {
+  url: string;
+  setUrl: React.Dispatch<React.SetStateAction<string>>;
+};
 
+export default function WebsiteForm({ url, setUrl }: props) {
   function handleSubmit() {
     console.log(url);
   }
