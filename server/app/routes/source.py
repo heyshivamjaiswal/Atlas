@@ -1,9 +1,12 @@
 from fastapi import APIRouter
 
-from app.schemas.source import WebsiteSource
+from app.schemas.source import(
+     WebsiteSource, 
+     SourceResponse 
+)
 from app.services.source_service import (
     process_website, 
-    get_all_sources
+    fetch_source,
     )
 
 
@@ -14,7 +17,12 @@ router = APIRouter(
 
 @router.get("/")
 def get_source():
-    return get_all_sources()
+    return fetch_source()
+
+@router.get("/{source_id}")
+def get_single_source(source_id: int):
+
+    return fetch_source(source_id)
 
 @router.post("/pdf")
 def upload_pdf():
@@ -22,7 +30,8 @@ def upload_pdf():
         "message": "pdf endpoint"
     }
 
-@router.post("/web")
+@router.post("/web" , response_model=SourceResponse)
+
 def add_website(data: WebsiteSource):
     return process_website(data.url)
 
