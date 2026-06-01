@@ -1,5 +1,6 @@
-from fastapi import APIRouter
+from fastapi import APIRouter , UploadFile , File
 from typing import Optional
+
 
 from app.schemas.source import(
      WebsiteSource, 
@@ -7,6 +8,7 @@ from app.schemas.source import(
 )
 from app.services.source_service import (
     process_website, 
+    process_pdf,
     fetch_source,
     fetch_sources,
     )
@@ -37,10 +39,10 @@ def get_single_source(source_id: int):
     return fetch_source(source_id)
 
 @router.post("/pdf")
-def upload_pdf():
-    return{
-        "message": "pdf endpoint"
-    }
+async def upload_pdf(
+    file: UploadFile = File(...)
+):
+    return await process_pdf(file)
 
 @router.post("/web" , response_model=SourceResponse)
 

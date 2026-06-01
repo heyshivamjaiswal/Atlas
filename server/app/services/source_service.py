@@ -1,10 +1,28 @@
 from fastapi import HTTPException
+from fastapi import UploadFile
+
+from app.repositories.source_repository import (
+    save_pdf_file,
+)
 
 from app.repositories.source_repository import (
     add_source,
     get_source,
     get_source_by_id,
 )
+
+async def process_pdf(file: UploadFile):
+    content = await file.read()
+
+    file_path = save_pdf_file(
+        file.filename,
+        content
+    )
+
+    return{
+        "file_name" : file.filename,
+        "path": file_path
+    }
 
 def process_website(url: str):
 
@@ -34,3 +52,4 @@ def fetch_source(source_id: int):
         )
 
     return source
+
