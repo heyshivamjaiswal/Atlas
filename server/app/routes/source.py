@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+from typing import Optional
 
 from app.schemas.source import(
      WebsiteSource, 
@@ -7,6 +8,7 @@ from app.schemas.source import(
 from app.services.source_service import (
     process_website, 
     fetch_source,
+    fetch_sources,
     )
 
 
@@ -16,8 +18,18 @@ router = APIRouter(
 )
 
 @router.get("/")
-def get_source():
-    return fetch_source()
+def get_source(
+    type: Optional[str] = None
+):
+    sources = fetch_sources()
+
+    if type:
+        return[
+            source
+            for source in sources
+            if source["type"] == type
+        ]
+    return sources
 
 @router.get("/{source_id}")
 def get_single_source(source_id: int):
@@ -40,4 +52,4 @@ def add_youtube():
     return{
         "message": "youtube endpoint"
     
-}
+} 

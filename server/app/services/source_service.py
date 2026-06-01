@@ -2,7 +2,7 @@ from fastapi import HTTPException
 
 from app.repositories.source_repository import (
     add_source,
-    get_source, 
+    get_source,
     get_source_by_id,
 )
 
@@ -13,7 +13,14 @@ def process_website(url: str):
         "type": "website",
         "url": str(url)
     }
+ 
     return add_source(source)
+
+
+def fetch_sources():
+
+    return get_source()
+
 
 def fetch_source(source_id: int):
 
