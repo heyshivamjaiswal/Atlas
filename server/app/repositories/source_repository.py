@@ -32,3 +32,14 @@ def get_source_by_id(source_id: int):
             return source
 
     return None    
+
+chunk_db = []
+
+def add_chunk(
+        chunk: list
+):
+    chunk_db.extend(chunk)
+    return chunk
+
+def get_chunk():
+    return chunk_db

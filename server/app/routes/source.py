@@ -6,12 +6,13 @@ from app.schemas.source import(
      WebsiteSource, 
      SourceResponse 
 )
-from app.services.source_service import (
-    process_website, 
-    process_pdf,
+from server.app.services.source.source_service import (
+    process_website,
     fetch_source,
     fetch_sources,
     )
+
+from app.services.source.source_service import process_pdf_source
 
 
 router = APIRouter(
@@ -42,7 +43,7 @@ def get_single_source(source_id: int):
 async def upload_pdf(
     file: UploadFile = File(...)
 ):
-    return await process_pdf(file)
+    return await process_pdf_source(file)
 
 @router.post("/web" , response_model=SourceResponse)
 
