@@ -1,6 +1,8 @@
 from fastapi import UploadFile
 
-from app.repositories.source_repository import save_pdf_file
+from app.services.source.pdf.chunk_mapper import map_chunks
+
+from app.repositories.source_repository import save_pdf_file, add_chunk
 
 from app.services.source.pdf.validator import  validator_pdf
 
@@ -21,10 +23,14 @@ async def process_pdf(file: UploadFile):
 
     chunks = create_chunks(docs)
 
+    mapped_chunks = map_chunks(chunks, file.filename)
+
+    add_chunk(mapped_chunks)
+
     return {
         "file_name": file.filename,
         "pages": len(docs),
-        "chunks": len(chunks),
+        "chunks": len(mapped_chunks),
         "preview": chunks[0].page_content[:500]
         if chunks else ""
     }
