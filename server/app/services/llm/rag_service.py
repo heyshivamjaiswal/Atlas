@@ -16,13 +16,24 @@ def answer_query(
     )
 
     context = "\n\n".join(
+
         [
             item["chunk"]["content"]
+
             for item in retrieved
         ]
     )
 
     prompt = f"""
+    You are a retrieval assistant.
+
+Rules:
+
+- ONLY answer using context
+- If answer is missing say:
+  "Information not found in documents"
+- Do not invent information
+
 Context:
 
 {context}
@@ -30,8 +41,6 @@ Context:
 Question:
 
 {query}
-
-Answer using only provided context.
 """
 
     return ask_llm(

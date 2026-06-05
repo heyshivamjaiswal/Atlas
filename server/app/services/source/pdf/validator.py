@@ -4,7 +4,10 @@ MAX_FILE_SIZE =  5 * 1024 * 1024
 
 async def validator_pdf(file: UploadFile):
     
-    if file != "application/pdf":
+
+    print(file.content_type)
+
+    if file.content_type != "application/pdf":
 
         raise HTTPException(
             status_code=400,

@@ -1,7 +1,7 @@
 from langchain_ollama import OllamaEmbeddings
 
 embedding_model = OllamaEmbeddings(
-    model="nomic-embedd-text"
+    model="nomic-embed-text"
 )
 
 def embed_chunks(chunks):
