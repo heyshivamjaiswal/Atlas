@@ -8,12 +8,24 @@ from app.services.llm.llm_service import (
 
 
 def answer_query(
-    query: str
+    query: str,
+    source_type: str | None = None
 ):
 
     retrieved = retrieve_chunks(
-        query
+        query=query,
+        source_type=source_type
     )
+
+    if not retrieved:
+
+        return {
+
+            "answer":
+            "Information not found in documents.",
+
+            "sources": []
+        }
 
     context = "\n\n".join(
 
@@ -24,15 +36,24 @@ def answer_query(
         ]
     )
 
+    print(
+        "\n===== CONTEXT ====="
+    )
+
+    print(
+        context[:1000]
+    )
+
     prompt = f"""
-    You are a retrieval assistant.
+You are a document QA assistant.
 
 Rules:
 
-- ONLY answer using context
-- If answer is missing say:
+- Use ONLY retrieved context
+- Never invent facts
+- If answer missing say:
   "Information not found in documents"
-- Do not invent information
+- Quote exact information when possible
 
 Context:
 
@@ -43,6 +64,29 @@ Question:
 {query}
 """
 
-    return ask_llm(
+    answer = ask_llm(
         prompt
     )
+
+    sources = []
+
+    for item in retrieved:
+
+        sources.append({
+
+            "source": item["chunk"]["source"],
+
+            "page": item["chunk"]["page"],
+
+            "score": round(
+                item["score"],
+                3
+            )
+        })
+
+    return {
+
+        "answer": answer,
+
+        "sources": sources
+    }

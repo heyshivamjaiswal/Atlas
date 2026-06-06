@@ -11,6 +11,8 @@ def map_chunks(
 
             "source": file_name,
 
+            "type": "pdf",
+
             "page": chunk.metadata.get('page', None),
 
            "content": chunk.page_content

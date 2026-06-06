@@ -16,8 +16,7 @@ router = APIRouter(
 )
 def ask_query(data: QueryRequest):
 
-    answer = answer_query(data.query)
-
-    return {
-        "answer": answer
-    }
+     return answer_query(
+          query=data.query,
+          source_type=data.source_type
+   )
