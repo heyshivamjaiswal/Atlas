@@ -1,21 +1,27 @@
 def map_chunks(
-        chunks,
-        file_name: str
+    chunks,
+    file_name: str,
+    source_id: int
 ):
-    mapped_chunks = []
 
-    for index , chunk in enumerate(chunks):
+    mapped = []
 
-        mapped_chunks.append({
-            "chunk_id": index +1,
+    for index, chunk in enumerate(chunks):
 
-            "source": file_name,
+        mapped.append({
 
-            "type": "pdf",
+            "source_id": source_id,
 
-            "page": chunk.metadata.get('page', None),
+            "chunk_index": index,
 
-           "content": chunk.page_content
+            "content": chunk.page_content,
+
+            "page": chunk.metadata.get(
+                "page",
+                0
+            ),
+
+            "source": file_name
         })
 
-    return mapped_chunks    
+    return mapped
