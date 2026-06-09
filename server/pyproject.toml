@@ -15,6 +15,7 @@ dependencies = [
     "psycopg2-binary>=2.9.12",
     "pypdf>=6.12.2",
     "python-multipart>=0.0.30",
+    "qdrant-client>=1.18.0",
     "sqlalchemy>=2.0.50",
     "uvicorn>=0.48.0",
 ]

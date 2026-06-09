@@ -4,11 +4,11 @@ from app.services.embedding.embedding_service import (
     embedding_model
 )
 
-from app.repositories.source_repository import (
+from app.repositories.vector_repository import (
     get_vectors
 )
 
-SIMILARITY_THRESHOLD = 0.45
+SIMILARITY_THRESHOLD = 0.60
 
 
 def embed_query(
@@ -96,7 +96,7 @@ def retrieve_chunks(
     for item in retrieved:
 
         print(
-            f"Score: {item['score']}"
+            f"Score: {round(item['score'], 3)}"
         )
 
         print(
@@ -104,5 +104,11 @@ def retrieve_chunks(
         )
 
         print("----------------")
+
+    if not retrieved:
+
+        print(
+            "No chunks passed threshold"
+        )
 
     return retrieved

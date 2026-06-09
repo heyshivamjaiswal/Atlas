@@ -1,4 +1,17 @@
 from fastapi import UploadFile
+from sqlalchemy.orm import Session
+
+from app.repositories.source_repository import (
+    create_source
+)
+
+from app.services.source.pdf.storage import (
+    save_pdf_file
+)
+
+from app.repositories.chunk_repository import (
+    create_chunks as create_chunk_records
+)
 
 from app.services.source.pdf.chunk_mapper import (
     map_chunks
@@ -6,12 +19,6 @@ from app.services.source.pdf.chunk_mapper import (
 
 from app.services.embedding.embedding_service import (
     embed_chunks
-)
-
-from app.repositories.source_repository import (
-    add_vectors,
-    save_pdf_file,
-    add_chunk,
 )
 
 from app.services.source.pdf.validator import (
@@ -23,74 +30,80 @@ from app.services.source.pdf.loader import (
 )
 
 from app.services.source.pdf.splitter import (
-    create_chunks
+    create_chunks as split_chunks
 )
 
 
 async def process_pdf(
-    file: UploadFile
+    file: UploadFile,
+    db: Session
 ):
 
-    # validation
+    # validate file
     content = await validator_pdf(
         file
     )
 
-    # save uploaded file
+    # save pdf locally
     file_path = save_pdf_file(
+
         file.filename,
+
         content
     )
 
-    # load documents
+    # load document
     docs = load_pdf_document(
         file_path
     )
 
-    # create chunks
-    chunks = create_chunks(
+    # split document
+    chunks = split_chunks(
         docs
     )
 
-    # convert langchain chunks -> internal format
+    # create source row
+    source = create_source(
+
+        db=db,
+
+        user_id=1,  # temp until auth
+
+        source_type="pdf",
+
+        title=file.filename,
+
+        file_name=file.filename
+    )
+
+    # map chunks
     mapped_chunks = map_chunks(
+
         chunks,
-        file.filename
+
+        file.filename,
+
+        source.id
     )
 
-    # store chunks
-    add_chunk(
-        mapped_chunks
+    # persist chunks
+    create_chunk_records(
+
+        db=db,
+
+        chunks=mapped_chunks
     )
 
-    # create embeddings
+    # embeddings (temporary still in memory)
     vectors = embed_chunks(
         mapped_chunks
-    )
-
-    # combine chunk metadata + embeddings
-    embedded_chunks = []
-
-    for chunk, vector in zip(
-        mapped_chunks,
-        vectors
-    ):
-
-        embedded_chunks.append({
-
-            **chunk,
-
-            "embedding": vector
-        })
-
-    # store vectors with metadata
-    add_vectors(
-        embedded_chunks
     )
 
     return {
 
         "file_name": file.filename,
+
+        "source_id": source.id,
 
         "pages": len(docs),
 
@@ -99,6 +112,8 @@ async def process_pdf(
         "embeddings": len(vectors),
 
         "preview":
+
             chunks[0].page_content[:500]
+
             if chunks else ""
     }
