@@ -20,18 +20,14 @@ def answer_query(
     if not retrieved:
 
         return {
-
             "answer":
             "Information not found in documents.",
-
             "sources": []
         }
 
     context = "\n\n".join(
-
         [
-            item["chunk"]["content"]
-
+            item.payload["content"]
             for item in retrieved
         ]
     )
@@ -74,12 +70,12 @@ Question:
 
         sources.append({
 
-            "source": item["chunk"]["source"],
+            "source": item.payload["source"],
 
-            "page": item["chunk"]["page"],
+            "page": item.payload["page"],
 
             "score": round(
-                item["score"],
+                item.score,
                 3
             )
         })

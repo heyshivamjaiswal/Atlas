@@ -5,12 +5,16 @@ from app.repositories.source_repository import (
     create_source
 )
 
-from app.services.source.pdf.storage import (
-    save_pdf_file
-)
-
 from app.repositories.chunk_repository import (
     create_chunks as create_chunk_records
+)
+
+from app.repositories.vector_repository import (
+    add_vectors
+)
+
+from app.services.source.pdf.storage import (
+    save_pdf_file
 )
 
 from app.services.source.pdf.chunk_mapper import (
@@ -46,9 +50,7 @@ async def process_pdf(
 
     # save pdf locally
     file_path = save_pdf_file(
-
         file.filename,
-
         content
     )
 
@@ -64,39 +66,48 @@ async def process_pdf(
 
     # create source row
     source = create_source(
-
         db=db,
-
-        user_id=1,  # temp until auth
-
+        user_id=1,  # temporary until auth
         source_type="pdf",
-
         title=file.filename,
-
         file_name=file.filename
     )
 
     # map chunks
     mapped_chunks = map_chunks(
-
         chunks,
-
         file.filename,
-
         source.id
     )
 
-    # persist chunks
+    # store chunks in postgres
     create_chunk_records(
-
         db=db,
-
         chunks=mapped_chunks
     )
 
-    # embeddings (temporary still in memory)
+    # create embeddings
     vectors = embed_chunks(
         mapped_chunks
+    )
+
+    # merge chunk metadata + embedding
+    embedded_chunks = []
+
+    for chunk, vector in zip(
+        mapped_chunks,
+        vectors
+    ):
+        embedded_chunks.append({
+
+            **chunk,
+
+            "embedding": vector
+        })
+
+    # store vectors in qdrant
+    add_vectors(
+        embedded_chunks
     )
 
     return {
@@ -112,8 +123,6 @@ async def process_pdf(
         "embeddings": len(vectors),
 
         "preview":
-
             chunks[0].page_content[:500]
-
             if chunks else ""
     }

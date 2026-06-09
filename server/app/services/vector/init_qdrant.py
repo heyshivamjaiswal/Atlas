@@ -21,6 +21,10 @@ def create_collection():
 
     if "atlas_chunks" in existing:
 
+        print(
+            "Collection already exists"
+        )
+
         return
 
     client.create_collection(
@@ -34,3 +38,12 @@ def create_collection():
             distance=Distance.COSINE
         )
     )
+
+    print(
+        "Collection created"
+    )
+
+
+if __name__ == "__main__":
+
+    create_collection()

@@ -8,4 +8,3 @@ client = QdrantClient(
     port=6333
 )
 
-print(client.get_collection())
