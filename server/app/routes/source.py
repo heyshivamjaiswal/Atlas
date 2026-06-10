@@ -17,8 +17,7 @@ from app.services.source.source_service import (
 )
 
 from app.schemas.source import (
-    WebsiteSource,
-    SourceResponse
+    WebsiteSource
 )
 
 router = APIRouter(
@@ -50,17 +49,22 @@ async def upload_pdf(
 
 
 @router.post(
-    "/web",
-
-    response_model=SourceResponse
+    "/web"
 )
 def add_website(
 
-    data: WebsiteSource
+    data: WebsiteSource,
+
+    db: Session = Depends(
+        get_db
+    )
 ):
 
     return process_website(
-        data.url
+
+        str(data.url),
+
+        db
     )
 
 

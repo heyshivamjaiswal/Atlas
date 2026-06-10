@@ -5,6 +5,10 @@ from app.services.source.pdf.processor import (
     process_pdf
 )
 
+from app.services.source.web.processor import (
+    process_website as process_website_source
+)
+
 
 async def process_pdf_source(
     file: UploadFile,
@@ -18,10 +22,11 @@ async def process_pdf_source(
 
 
 def process_website(
-    url: str
+    url: str,
+    db: Session
 ):
 
-    return {
-        "message": "Website ingestion not implemented yet",
-        "url": url
-    }
+    return process_website_source(
+        url,
+        db
+    )

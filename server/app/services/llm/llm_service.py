@@ -3,7 +3,7 @@ from langchain_ollama import (
 )
 
 llm = ChatOllama(
-    model="qwen:7b"
+    model="llama3.2:3b"
 )
 
 
