@@ -87,7 +87,7 @@ def process_website(
 
     # qdrant
     add_vectors(
-        embedded_chunks
+        embedded_chunks 
     )
 
     return {

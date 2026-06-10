@@ -21,4 +21,5 @@ dependencies = [
     "qdrant-client>=1.18.0",
     "sqlalchemy>=2.0.50",
     "uvicorn>=0.48.0",
+    "youtube-transcript-api>=1.2.4",
 ]

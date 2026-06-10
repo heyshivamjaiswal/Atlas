@@ -13,7 +13,8 @@ from app.database.dependencies import (
 
 from app.services.source.source_service import (
     process_pdf_source,
-    process_website
+    process_website,
+    process_youtube_source
 )
 
 from app.schemas.source import (
@@ -71,9 +72,18 @@ def add_website(
 @router.post(
     "/youtube"
 )
-def add_youtube():
+def add_youtube(
 
-    return {
+    data: WebsiteSource,
 
-        "message": "youtube endpoint"
-    }
+    db: Session = Depends(
+        get_db
+    )
+):
+
+    return process_youtube_source(
+
+        str(data.url),
+
+        db
+    ) 

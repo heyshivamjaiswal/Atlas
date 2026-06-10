@@ -59,6 +59,8 @@ Question:
 
 {query}
 """
+    print("\n===== PROMPT =====")
+    print(prompt)
 
     answer = ask_llm(
         prompt
