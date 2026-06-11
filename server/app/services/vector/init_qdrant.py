@@ -3,7 +3,7 @@ from qdrant_client.models import (
     Distance
 )
 
-from app.services.vector.qdrant_client import (
+from server.app.services.vector.qdrant_connection import (
     client
 )
 
