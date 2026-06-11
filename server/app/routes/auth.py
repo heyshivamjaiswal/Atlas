@@ -18,6 +18,18 @@ from app.services.auth.auth_service import (
     register_user
 )
 
+from app.schemas.auth import (
+    RegisterRequest,
+    RegisterResponse,
+    LoginRequest,
+    LoginResponse
+)
+
+from app.services.auth.auth_service import (
+    register_user,
+    login_user
+)
+
 router = APIRouter(
 
     prefix="/auth",
@@ -47,5 +59,21 @@ def register(
 
         data.email,
 
+        data.password
+    )
+
+
+@router.post(
+    "/login",
+    response_model=LoginResponse
+)
+def login(
+    data: LoginRequest,
+    db: Session = Depends(get_db)
+):
+
+    return login_user(
+        db,
+        data.email,
         data.password
     )

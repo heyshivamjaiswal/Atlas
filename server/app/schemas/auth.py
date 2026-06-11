@@ -1,13 +1,21 @@
-from pydantic import BaseModel , EmailStr
+from pydantic import BaseModel, EmailStr
+
 
 class RegisterRequest(BaseModel):
-
     email: EmailStr
+    password: str
 
-    password: str 
 
 class RegisterResponse(BaseModel):
-
     id: int
+    email: str
 
-    email: str    
+
+class LoginRequest(BaseModel):
+    email: EmailStr
+    password: str
+
+
+class LoginResponse(BaseModel):
+    access_token: str
+    token_type: str

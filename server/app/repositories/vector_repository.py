@@ -7,7 +7,7 @@ from qdrant_client.models import (
 
 import uuid
 
-from server.app.services.vector.qdrant_connection import client
+from app.services.vector.qdrant_connection import client
 
 COLLECTION_NAME = "atlas_chunks"
 

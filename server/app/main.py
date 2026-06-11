@@ -14,8 +14,10 @@ from app.routes.source import router as source_router
 from app.routes.query import router as query_router
 from app.routes.auth import router as auth_router
 
+
 # Create tables
 Base.metadata.create_all(bind=engine)
+
 
 app = FastAPI()
 
