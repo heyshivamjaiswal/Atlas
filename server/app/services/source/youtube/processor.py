@@ -8,8 +8,8 @@ from app.services.source.youtube.loader import (
     load_youtube_document
 )
 
-from app.services.source.pdf.splitter import (
-    create_chunks as split_chunks
+from app.services.source.youtube.splitter import (
+    create_youtube_chunks
 )
 
 from app.services.source.pdf.chunk_mapper import (
@@ -49,7 +49,7 @@ def process_youtube(
     )
 
     # split transcript
-    chunks = split_chunks(
+    chunks = create_youtube_chunks(
         docs
     )
 

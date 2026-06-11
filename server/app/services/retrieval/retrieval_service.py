@@ -9,7 +9,7 @@ from app.repositories.vector_repository import (
 
 def retrieve_chunks(
     query: str,
-    top_k: int = 5,
+    top_k: int = 3,
     source_type: str | None = None,
     source_id: int | None = None
 ):
