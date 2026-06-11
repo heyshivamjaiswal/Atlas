@@ -13,33 +13,41 @@ from app.services.source.youtube.processor import (
     process_youtube as youtube_processor
 )
 
+
 async def process_pdf_source(
     file: UploadFile,
-    db: Session
+    db: Session,
+    user_id: int
 ):
 
     return await process_pdf(
         file,
-        db
+        db,
+        user_id
     )
 
 
 def process_website(
     url: str,
-    db: Session
+    db: Session,
+    user_id: int
 ):
 
     return process_website_source(
         url,
-        db
+        db,
+        user_id
     )
 
 
-def  process_youtube_source(
-        url:str,
-        db:Session
+def process_youtube_source(
+    url: str,
+    db: Session,
+    user_id: int
 ):
+
     return youtube_processor(
         url,
-        db
+        db,
+        user_id
     )

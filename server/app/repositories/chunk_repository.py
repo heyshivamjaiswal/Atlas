@@ -43,7 +43,7 @@ def count_chunks_by_source_id(
 
 def delete_chunks_by_source_id(
     db: Session,
-    source_id: int
+    source_id: int,
 ):
 
     (
@@ -63,5 +63,22 @@ def get_all_chunks(
 
     return (
         db.query(Chunk)
+        .all()
+    )
+
+
+def get_chunks_by_source_ids(
+    db: Session,
+    source_ids: list[int]
+):
+
+    if not source_ids:
+        return []
+
+    return (
+        db.query(Chunk)
+        .filter(
+            Chunk.source_id.in_(source_ids)
+        )
         .all()
     )

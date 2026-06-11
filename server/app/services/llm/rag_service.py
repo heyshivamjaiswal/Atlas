@@ -12,6 +12,7 @@ from app.services.llm.llm_service import (
 def answer_query(
     query: str,
     db: Session,
+    user_id: int,
     source_type: str | None = None,
     source_id: int | None = None
 ):
@@ -19,6 +20,7 @@ def answer_query(
     retrieved = retrieve_chunks(
         query=query,
         db=db,
+        user_id=user_id,
         source_type=source_type,
         source_id=source_id
     )

@@ -35,7 +35,8 @@ from app.repositories.vector_repository import (
 
 def process_youtube(
     url: str,
-    db: Session
+    db: Session,
+    user_id: int
 ):
 
     # validate
@@ -58,7 +59,7 @@ def process_youtube(
 
         db=db,
 
-        user_id=1,  # temp until auth
+        user_id=user_id,
 
         source_type="youtube",
 
@@ -71,11 +72,10 @@ def process_youtube(
     mapped_chunks = map_chunks(
 
         chunks,
-
         url,
-
         source.id,
-        "youtube"
+        "youtube",
+        user_id
     )
 
     # save chunk records

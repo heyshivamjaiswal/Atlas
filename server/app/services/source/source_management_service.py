@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.repositories.source_repository import (
     get_sources,
-    get_source_by_id,
+    get_source_by_id_and_user,
     delete_source as delete_source_record
 )
 
@@ -18,10 +18,14 @@ from app.repositories.vector_repository import (
 
 
 def list_sources(
-    db: Session
+    db: Session,
+    user_id: int
 ):
 
-    sources = get_sources(db)
+    sources = get_sources(
+        db,
+        user_id
+    )
 
     result = []
 
@@ -47,12 +51,14 @@ def list_sources(
 
 def get_source_details(
     db: Session,
-    source_id: int
+    source_id: int,
+    user_id: int
 ):
 
-    source = get_source_by_id(
+    source = get_source_by_id_and_user(
         db,
-        source_id
+        source_id,
+        user_id
     )
 
     if not source:
@@ -82,12 +88,15 @@ def get_source_details(
 
 def delete_source_service(
     db: Session,
-    source_id: int
+    source_id: int,
+    user_id: int
 ):
 
-    source = get_source_by_id(
+    source = get_source_by_id_and_user(
         db,
-        source_id
+        source_id,
+        user_id
+
     )
 
     if not source:
@@ -99,16 +108,16 @@ def delete_source_service(
 
     delete_chunks_by_source_id(
         db,
-        source_id
+        source_id,
     )
 
     delete_vectors_by_source_id(
-        source_id
+        source_id,
     )
 
     delete_source_record(
         db,
-        source
+        source,
     )
 
     return {

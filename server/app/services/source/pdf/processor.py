@@ -40,7 +40,8 @@ from app.services.source.pdf.splitter import (
 
 async def process_pdf(
     file: UploadFile,
-    db: Session
+    db: Session,
+    user_id: int
 ):
 
     # validate file
@@ -67,7 +68,7 @@ async def process_pdf(
     # create source row
     source = create_source(
         db=db,
-        user_id=1,  # temporary until auth
+        user_id=user_id,
         source_type="pdf",
         title=file.filename,
         file_name=file.filename
@@ -78,7 +79,8 @@ async def process_pdf(
         chunks,
         file.filename,
         source.id,
-        "pdf"
+        "pdf",
+        user_id
     )
 
     # store chunks in postgres
@@ -92,7 +94,6 @@ async def process_pdf(
         mapped_chunks
     )
 
-    # merge chunk metadata + embedding
     embedded_chunks = []
 
     for chunk, vector in zip(
@@ -100,9 +101,7 @@ async def process_pdf(
         vectors
     ):
         embedded_chunks.append({
-
             **chunk,
-
             "embedding": vector
         })
 
@@ -112,17 +111,11 @@ async def process_pdf(
     )
 
     return {
-
         "file_name": file.filename,
-
         "source_id": source.id,
-
         "pages": len(docs),
-
         "chunks": len(mapped_chunks),
-
         "embeddings": len(vectors),
-
         "preview":
             chunks[0].page_content[:500]
             if chunks else ""

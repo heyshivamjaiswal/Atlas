@@ -32,7 +32,8 @@ def add_vectors(
                     "source": chunk["source"],
                     "page": chunk["page"],
                     "source_id": chunk["source_id"],
-                    "source_type": chunk["source_type"]
+                    "source_type": chunk["source_type"],
+                    "user_id": chunk["user_id"]
                 }
             )
         )
@@ -46,11 +47,23 @@ def add_vectors(
 def search_vectors(
     query_vector,
     limit=5,
+    user_id: int | None = None,
     source_type: str | None = None,
     source_id: int | None = None
 ):
 
     conditions = []
+
+    if user_id:
+
+        conditions.append(
+            FieldCondition(
+                key="user_id",
+                match=MatchValue(
+                    value=user_id
+                )
+            )
+        )
 
     if source_type:
 

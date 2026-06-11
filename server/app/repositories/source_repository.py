@@ -26,18 +26,29 @@ def create_source(
 
 
 def get_sources(
-    db: Session
-):
-    return db.query(Source).all()
-
-
-def get_source_by_id(
     db: Session,
-    source_id: int
+    user_id: int
 ):
     return (
         db.query(Source)
-        .filter(Source.id == source_id)
+        .filter(
+            Source.user_id == user_id
+        )
+        .all()
+    )
+
+
+def get_source_by_id_and_user(
+    db: Session,
+    source_id: int,
+    user_id: int
+):
+    return (
+        db.query(Source)
+        .filter(
+            Source.id == source_id,
+            Source.user_id == user_id
+        )
         .first()
     )
 
@@ -48,3 +59,22 @@ def delete_source(
 ):
     db.delete(source)
     db.commit()
+
+
+def get_source_ids_by_user(
+    db: Session,
+    user_id: int
+):
+
+    sources = (
+        db.query(Source.id)
+        .filter(
+            Source.user_id == user_id
+        )
+        .all()
+    )
+
+    return [
+        source.id
+        for source in sources
+    ]

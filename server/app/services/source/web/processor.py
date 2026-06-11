@@ -35,7 +35,8 @@ from app.repositories.vector_repository import (
 
 def process_website(
     url: str,
-    db: Session
+    db: Session,
+    user_id: int
 ):
 
     # validate
@@ -50,7 +51,7 @@ def process_website(
     # create source
     source = create_source(
         db=db,
-        user_id=1,  # temporary
+        user_id=user_id,
         source_type="website",
         title=url,
         file_name=None
@@ -61,7 +62,8 @@ def process_website(
         chunks,
         url,
         source.id,
-        "website"
+        "website",
+        user_id
     )
 
     # store chunks
