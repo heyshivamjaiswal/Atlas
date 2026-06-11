@@ -10,7 +10,8 @@ from app.repositories.vector_repository import (
 def retrieve_chunks(
     query: str,
     top_k: int = 5,
-    source_type: str | None = None
+    source_type: str | None = None,
+    source_id: int | None = None
 ):
 
     query_vector = embedding_model.embed_query(
@@ -20,7 +21,9 @@ def retrieve_chunks(
     results = search_vectors(
         query_vector=query_vector,
         limit=top_k,
-        source_type=source_type
+        source_type=source_type,
+        source_id=source_id
+
     )
 
     print(

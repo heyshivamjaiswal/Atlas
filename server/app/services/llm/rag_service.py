@@ -9,12 +9,14 @@ from app.services.llm.llm_service import (
 
 def answer_query(
     query: str,
-    source_type: str | None = None
+    source_type: str | None = None,
+    source_id: int | None = None
 ):
 
     retrieved = retrieve_chunks(
         query=query,
-        source_type=source_type
+        source_type=source_type,
+        source_id=source_id
     )
 
     if not retrieved:

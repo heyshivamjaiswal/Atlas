@@ -46,22 +46,40 @@ def add_vectors(
 def search_vectors(
     query_vector,
     limit=5,
-    source_type: str | None = None
+    source_type: str | None = None,
+    source_id: int | None = None
 ):
 
-    query_filter = None
+    conditions = []
 
     if source_type:
 
-        query_filter = Filter(
-            must=[
-                FieldCondition(
-                    key="source_type",
-                    match=MatchValue(
-                        value=source_type
-                    )
+        conditions.append(
+            FieldCondition(
+                key="source_type",
+                match=MatchValue(
+                    value=source_type
                 )
-            ]
+            )
+        )
+
+    if source_id:
+
+        conditions.append(
+            FieldCondition(
+                key="source_id",
+                match=MatchValue(
+                    value=source_id
+                )
+            )
+        )
+
+    query_filter = None
+
+    if conditions:
+
+        query_filter = Filter(
+            must=conditions
         )
 
     response = client.query_points(

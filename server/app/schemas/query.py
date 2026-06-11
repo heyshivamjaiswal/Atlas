@@ -15,6 +15,7 @@ class QueryRequest(
 ):
     query: str
     source_type: Optional[str] = None
+    source_id: Optional[int] = None
 
 
 class QueryResponse(
