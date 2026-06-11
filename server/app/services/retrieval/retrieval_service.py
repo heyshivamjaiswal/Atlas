@@ -14,6 +14,9 @@ def retrieve_chunks(
     source_id: int | None = None
 ):
 
+    seen = set()
+    unique_results = []
+
     query_vector = embedding_model.embed_query(
         query
     )
@@ -34,6 +37,21 @@ def retrieve_chunks(
 
     for result in results:
 
+        content = result.payload["content"]
+
+        if content in seen:
+            continue
+
+        seen.add(content)
+        unique_results.append(result)
+
+        print(
+            f"""
+            Source ID: {result.payload.get("source_id")}
+            Source Type: {result.payload.get("source_type")}
+            Score: {round(result.score, 3)}
+            """
+        )
         print(
             f"Score: {round(result.score, 3)}"
         )
@@ -47,4 +65,4 @@ def retrieve_chunks(
 
         print("----------------")
 
-    return results
+    return unique_results
