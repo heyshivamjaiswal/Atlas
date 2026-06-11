@@ -74,7 +74,8 @@ def process_youtube(
 
         url,
 
-        source.id
+        source.id,
+        "youtube"
     )
 
     # save chunk records

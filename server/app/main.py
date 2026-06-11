@@ -16,7 +16,6 @@ app = FastAPI()
 def root():
 
     return {
-
         "message": "Atlas backend working"
     }
 

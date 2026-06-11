@@ -60,7 +60,8 @@ def process_website(
     mapped_chunks = map_chunks(
         chunks,
         url,
-        source.id
+        source.id,
+        "website"
     )
 
     # store chunks
@@ -87,7 +88,7 @@ def process_website(
 
     # qdrant
     add_vectors(
-        embedded_chunks 
+        embedded_chunks
     )
 
     return {

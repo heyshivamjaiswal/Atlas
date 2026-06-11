@@ -54,7 +54,7 @@ async def process_pdf(
         content
     )
 
-    # load document 
+    # load document
     docs = load_pdf_document(
         file_path
     )
@@ -77,7 +77,8 @@ async def process_pdf(
     mapped_chunks = map_chunks(
         chunks,
         file.filename,
-        source.id
+        source.id,
+        "pdf"
     )
 
     # store chunks in postgres

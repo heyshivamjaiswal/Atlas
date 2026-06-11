@@ -41,15 +41,13 @@ def answer_query(
     )
 
     prompt = f"""
-You are a document QA assistant.
+Answer the question using ONLY the provided context.
 
-Rules:
+If the answer exists in the context, answer directly.
 
-- Use ONLY retrieved context
-- Never invent facts
-- If answer missing say:
-  "Information not found in documents"
-- Quote exact information when possible
+If the answer does not exist in the context, reply exactly:
+
+Information not found in documents.
 
 Context:
 
@@ -58,12 +56,28 @@ Context:
 Question:
 
 {query}
+
+Answer:
 """
-    print("\n===== PROMPT =====")
-    print(prompt)
+
+    print(
+        "\n===== PROMPT ====="
+    )
+
+    print(
+        prompt
+    )
 
     answer = ask_llm(
         prompt
+    )
+
+    print(
+        "\n===== ANSWER ====="
+    )
+
+    print(
+        answer
     )
 
     sources = []

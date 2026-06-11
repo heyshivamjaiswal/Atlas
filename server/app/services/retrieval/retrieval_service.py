@@ -9,7 +9,7 @@ from app.repositories.vector_repository import (
 
 def retrieve_chunks(
     query: str,
-    top_k: int = 5, 
+    top_k: int = 5,
     source_type: str | None = None
 ):
 
@@ -19,7 +19,12 @@ def retrieve_chunks(
 
     results = search_vectors(
         query_vector=query_vector,
-        limit=top_k
+        limit=top_k,
+        source_type=source_type
+    )
+
+    print(
+        f"\nFiltering by source_type: {source_type}"
     )
 
     print("\n===== RETRIEVED =====")

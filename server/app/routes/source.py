@@ -17,6 +17,12 @@ from app.services.source.source_service import (
     process_youtube_source
 )
 
+from app.services.source.source_management_service import (
+    list_sources,
+    get_source_details,
+    delete_source_service
+)
+
 from app.schemas.source import (
     WebsiteSource
 )
@@ -86,4 +92,57 @@ def add_youtube(
         str(data.url),
 
         db
-    ) 
+    )
+
+
+@router.get("")
+def get_sources_endpoint(
+
+    db: Session = Depends(
+        get_db
+    )
+):
+
+    return list_sources(
+        db
+    )
+
+
+@router.get(
+    "/{source_id}"
+)
+def get_source_endpoint(
+
+    source_id: int,
+
+    db: Session = Depends(
+        get_db
+    )
+):
+
+    return get_source_details(
+
+        db,
+
+        source_id
+    )
+
+
+@router.delete(
+    "/{source_id}"
+)
+def delete_source_endpoint(
+
+    source_id: int,
+
+    db: Session = Depends(
+        get_db
+    )
+):
+
+    return delete_source_service(
+
+        db,
+
+        source_id
+    )
