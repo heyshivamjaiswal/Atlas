@@ -1,3 +1,5 @@
+from sqlalchemy.orm import Session
+
 from app.services.retrieval.retrieval_service import (
     retrieve_chunks
 )
@@ -9,12 +11,14 @@ from app.services.llm.llm_service import (
 
 def answer_query(
     query: str,
+    db: Session,
     source_type: str | None = None,
     source_id: int | None = None
 ):
 
     retrieved = retrieve_chunks(
         query=query,
+        db=db,
         source_type=source_type,
         source_id=source_id
     )

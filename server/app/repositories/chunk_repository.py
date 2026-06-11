@@ -55,3 +55,13 @@ def delete_chunks_by_source_id(
     )
 
     db.commit()
+
+
+def get_all_chunks(
+    db: Session
+):
+
+    return (
+        db.query(Chunk)
+        .all()
+    )

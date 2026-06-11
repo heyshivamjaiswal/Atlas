@@ -2,6 +2,8 @@ from app.services.embedding.embedding_service import (
     embedding_model
 )
 
+from sqlalchemy.orm import Session
+
 from app.repositories.vector_repository import (
     search_vectors
 )
@@ -9,6 +11,7 @@ from app.repositories.vector_repository import (
 
 def retrieve_chunks(
     query: str,
+    db: Session,
     top_k: int = 3,
     source_type: str | None = None,
     source_id: int | None = None
@@ -51,9 +54,6 @@ def retrieve_chunks(
             Source Type: {result.payload.get("source_type")}
             Score: {round(result.score, 3)}
             """
-        )
-        print(
-            f"Score: {round(result.score, 3)}"
         )
 
         print(
