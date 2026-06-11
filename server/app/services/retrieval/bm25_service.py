@@ -7,6 +7,9 @@ def bm25_search(
     top_k: int = 5
 ):
 
+    if not chunks:
+        return []
+
     corpus = [
         chunk.content
         for chunk in chunks

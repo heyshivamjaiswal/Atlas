@@ -2,7 +2,8 @@ def map_chunks(
     chunks,
     source: str,
     source_id: int,
-    source_type: str
+    source_type: str,
+    user_id: int
 ):
 
     mapped = []
@@ -14,6 +15,8 @@ def map_chunks(
             "source_id": source_id,
 
             "source_type": source_type,
+
+            "user_id": user_id,
 
             "chunk_index": index,
 

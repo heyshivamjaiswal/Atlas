@@ -1,7 +1,5 @@
 from fastapi import (
     APIRouter,
-    UploadFile,
-    File,
     Depends
 )
 
@@ -11,155 +9,63 @@ from app.database.dependencies import (
     get_db
 )
 
+from app.schemas.auth import (
+    RegisterRequest,
+    RegisterResponse,
+    LoginRequest,
+    LoginResponse
+)
+
+from app.services.auth.auth_service import (
+    register_user,
+    login_user
+)
+
 from app.services.auth.current_user import (
     get_current_user
 )
 
-from app.services.source.source_service import (
-    process_pdf_source,
-    process_website,
-    process_youtube_source
-)
-
-from app.services.source.source_management_service import (
-    list_sources,
-    get_source_details,
-    delete_source_service
-)
-
-from app.schemas.source import (
-    WebsiteSource
-)
-
 router = APIRouter(
-    prefix="/source",
-    tags=["source"]
+    prefix="/auth",
+    tags=["auth"]
 )
 
 
-@router.post("/pdf")
-async def upload_pdf(
-
-    file: UploadFile = File(...),
-
-    db: Session = Depends(get_db),
-
-    current_user=Depends(
-        get_current_user
-    )
+@router.post(
+    "/register",
+    response_model=RegisterResponse
+)
+def register(
+    data: RegisterRequest,
+    db: Session = Depends(get_db)
 ):
-
-    return await process_pdf_source(
-
-        file=file,
-
-        db=db,
-
-        user_id=current_user.id
-    )
-
-
-@router.post("/web")
-def add_website(
-
-    data: WebsiteSource,
-
-    db: Session = Depends(get_db),
-
-    current_user=Depends(
-        get_current_user
-    )
-):
-
-    return process_website(
-
-        str(data.url),
-
+    return register_user(
         db,
-
-        current_user.id
+        data.email,
+        data.password
     )
 
 
-@router.post("/youtube")
-def add_youtube(
-
-    data: WebsiteSource,
-
-    db: Session = Depends(get_db),
-
-    current_user=Depends(
-        get_current_user
-    )
+@router.post(
+    "/login",
+    response_model=LoginResponse
+)
+def login(
+    data: LoginRequest,
+    db: Session = Depends(get_db)
 ):
-
-    return process_youtube_source(
-
-        str(data.url),
-
+    return login_user(
         db,
-
-        current_user.id
+        data.email,
+        data.password
     )
 
 
-@router.get("")
-def get_sources_endpoint(
-
-    db: Session = Depends(get_db),
-
-    current_user=Depends(
-        get_current_user
-    )
+@router.get("/me")
+def me(
+    current_user=Depends(get_current_user)
 ):
-
-    return list_sources(
-
-        db,
-
-        current_user.id
-    )
-
-
-@router.get("/{source_id}")
-def get_source_endpoint(
-
-    source_id: int,
-
-    db: Session = Depends(get_db),
-
-    current_user=Depends(
-        get_current_user
-    )
-):
-
-    return get_source_details(
-
-        db,
-
-        source_id,
-
-        current_user.id
-    )
-
-
-@router.delete("/{source_id}")
-def delete_source_endpoint(
-
-    source_id: int,
-
-    db: Session = Depends(get_db),
-
-    current_user=Depends(
-        get_current_user
-    )
-):
-
-    return delete_source_service(
-
-        db,
-
-        source_id,
-
-        current_user.id
-    )
+    return {
+        "id": current_user.id,
+        "email": current_user.email
+    }
