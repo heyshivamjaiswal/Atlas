@@ -20,6 +20,7 @@ from app.routes.chat import (
 
 import app.models.chat_session
 import app.models.message
+import app.models.chat_session_source
 
 
 # Create tables

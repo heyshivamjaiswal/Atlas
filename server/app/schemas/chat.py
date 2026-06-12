@@ -3,6 +3,7 @@ from pydantic import BaseModel
 
 class CreateChatRequest(BaseModel):
     title: str
+    source_ids: list[int]
 
 
 class ChatResponse(BaseModel):

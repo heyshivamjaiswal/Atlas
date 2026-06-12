@@ -50,7 +50,9 @@ def create_chat(
 
         current_user.id,
 
-        data.title
+        data.title,
+
+        data.source_ids
     )
 
 
