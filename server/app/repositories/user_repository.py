@@ -51,3 +51,12 @@ def get_user_by_id(
     ).filter(
         User.id == user_id
     ).first()
+
+
+def delete_user(
+        db: Session,
+        user: User
+):
+
+    db.delete(user)
+    db.commit()

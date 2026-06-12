@@ -78,3 +78,19 @@ def get_source_ids_by_user(
         source.id
         for source in sources
     ]
+
+
+def delete_sources_by_user_id(
+        db: Session,
+        user_id: int
+):
+
+    (
+        db.query(Source)
+        .filter(
+            Source.user_id == user_id
+        )
+        .delete()
+    )
+
+    db.commit()
