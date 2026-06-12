@@ -2,7 +2,8 @@ from qdrant_client.models import (
     PointStruct,
     Filter,
     FieldCondition,
-    MatchValue
+    MatchValue,
+    MatchAny
 )
 
 import uuid
@@ -48,8 +49,7 @@ def search_vectors(
     query_vector,
     limit=5,
     user_id: int | None = None,
-    source_type: str | None = None,
-    source_id: int | None = None
+    source_ids: list[int] | None = None
 ):
 
     conditions = []
@@ -65,24 +65,13 @@ def search_vectors(
             )
         )
 
-    if source_type:
-
-        conditions.append(
-            FieldCondition(
-                key="source_type",
-                match=MatchValue(
-                    value=source_type
-                )
-            )
-        )
-
-    if source_id:
+    if source_ids:
 
         conditions.append(
             FieldCondition(
                 key="source_id",
-                match=MatchValue(
-                    value=source_id
+                match=MatchAny(
+                    any=source_ids
                 )
             )
         )

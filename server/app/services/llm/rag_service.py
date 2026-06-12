@@ -13,16 +13,14 @@ def answer_query(
     query: str,
     db: Session,
     user_id: int,
-    source_type: str | None = None,
-    source_id: int | None = None
+    source_ids: list[int]
 ):
 
     retrieved = retrieve_chunks(
         query=query,
         db=db,
         user_id=user_id,
-        source_type=source_type,
-        source_id=source_id
+        source_ids=source_ids
     )
 
     if not retrieved:

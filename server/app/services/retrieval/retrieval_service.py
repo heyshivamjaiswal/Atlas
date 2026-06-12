@@ -9,19 +9,11 @@ from app.repositories.vector_repository import (
 )
 
 from app.repositories.chunk_repository import (
-    get_all_chunks
+    get_chunks_by_source_ids
 )
 
 from app.services.retrieval.bm25_service import (
     bm25_search
-)
-
-from app.repositories.source_repository import (
-    get_source_ids_by_user
-)
-
-from app.repositories.chunk_repository import (
-    get_chunks_by_source_ids
 )
 
 
@@ -30,8 +22,7 @@ def retrieve_chunks(
     db: Session,
     user_id: int,
     top_k: int = 3,
-    source_type: str | None = None,
-    source_id: int | None = None
+    source_ids: list[int] | None = None
 ):
 
     seen = set()
@@ -47,30 +38,20 @@ def retrieve_chunks(
         query_vector=query_vector,
         limit=top_k,
         user_id=user_id,
-        source_type=source_type,
-        source_id=source_id
+        source_ids=source_ids
     )
 
     # BM25 SEARCH
 
-    source_ids = get_source_ids_by_user(
-        db,
-        user_id
-    )
-
     chunks = get_chunks_by_source_ids(
         db,
-        source_ids
+        source_ids or []
     )
 
     bm25_results = bm25_search(
         query=query,
         chunks=chunks,
         top_k=top_k
-    )
-
-    print(
-        f"\nFiltering by source_type: {source_type}"
     )
 
     print("\n===== VECTOR RESULTS =====")
@@ -110,10 +91,10 @@ def retrieve_chunks(
 
         print(
             f"""
-Source ID: {result.payload.get("source_id")}
-Source Type: {result.payload.get("source_type")}
-Score: {round(result.score, 3)}
-"""
+           Source ID: {result.payload.get("source_id")}
+        Source Type: {result.payload.get("source_type")}
+        Score: {round(result.score, 3)}
+         """
         )
 
         print(
