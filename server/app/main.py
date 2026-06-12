@@ -14,6 +14,13 @@ from app.routes.source import router as source_router
 from app.routes.query import router as query_router
 from app.routes.auth import router as auth_router
 
+from app.routes.chat import (
+    router as chat_router
+)
+
+import app.models.chat_session
+import app.models.message
+
 
 # Create tables
 Base.metadata.create_all(bind=engine)
@@ -44,4 +51,8 @@ app.include_router(
 
 app.include_router(
     auth_router
+)
+
+app.include_router(
+    chat_router
 )
