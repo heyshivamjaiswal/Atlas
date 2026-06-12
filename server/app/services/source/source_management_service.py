@@ -16,6 +16,10 @@ from app.repositories.vector_repository import (
     delete_vectors_by_source_id
 )
 
+from app.repositories.chat_session_source_repository import (
+    delete_sessions_by_source
+)
+
 
 def list_sources(
     db: Session,
@@ -96,7 +100,6 @@ def delete_source_service(
         db,
         source_id,
         user_id
-
     )
 
     if not source:
@@ -106,25 +109,30 @@ def delete_source_service(
             detail="Source not found"
         )
 
+    # 1. Delete vectors
+    delete_vectors_by_source_id(
+        source_id
+    )
+
+    # 2. Delete chunks
     delete_chunks_by_source_id(
         db,
-        source_id,
+        source_id
     )
 
-    delete_vectors_by_source_id(
-        source_id,
+    # 3. Delete chat ↔ source mappings
+    delete_sessions_by_source(
+        db,
+        source_id
     )
 
+    # 4. Delete source
     delete_source_record(
         db,
-        source,
+        source
     )
 
     return {
-
-        "message":
-        "Source deleted successfully",
-
-        "source_id":
-        source_id
+        "message": "Source deleted successfully",
+        "source_id": source_id
     }

@@ -17,6 +17,13 @@ from app.schemas.chat import (
     CreateChatRequest
 )
 
+from app.schemas.chat_message import (
+    ChatMessageRequest
+)
+from app.services.chat.chat_message_service import (
+    send_message
+)
+
 from app.services.chat.chat_service import (
     create_session,
     list_sessions,
@@ -121,4 +128,32 @@ def delete_chat(
         session_id,
 
         current_user.id
+    )
+
+
+@router.post("/{session_id}/message")
+def message_chat(
+
+    session_id: int,
+
+    data: ChatMessageRequest,
+
+    db: Session = Depends(
+        get_db
+    ),
+
+    current_user=Depends(
+        get_current_user
+    )
+):
+
+    return send_message(
+
+        db,
+
+        session_id,
+
+        current_user.id,
+
+        data.message
     )

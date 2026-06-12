@@ -83,6 +83,8 @@ def search_vectors(
         query_filter = Filter(
             must=conditions
         )
+        print("\n===== QDRANT FILTER =====")
+        print(query_filter)
 
     response = client.query_points(
         collection_name=COLLECTION_NAME,
@@ -90,6 +92,8 @@ def search_vectors(
         limit=limit,
         query_filter=query_filter
     )
+    print("\n===== QDRANT RESULTS =====")
+    print(len(response.points))
 
     return response.points
 

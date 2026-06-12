@@ -33,6 +33,9 @@ def retrieve_chunks(
     )
 
     # VECTOR SEARCH
+    print("\n===== RETRIEVAL FILTER =====")
+    print("user_id =", user_id)
+    print("source_ids =", source_ids)
 
     vector_results = search_vectors(
         query_vector=query_vector,

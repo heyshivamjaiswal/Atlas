@@ -56,3 +56,19 @@ def delete_sources_by_session(
     )
 
     db.commit()
+
+
+def delete_sessions_by_source(
+    db: Session,
+    source_id: int
+):
+
+    (
+        db.query(ChatSessionSource)
+        .filter(
+            ChatSessionSource.source_id == source_id
+        )
+        .delete()
+    )
+
+    db.commit()
