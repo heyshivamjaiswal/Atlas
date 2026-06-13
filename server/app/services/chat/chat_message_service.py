@@ -8,12 +8,13 @@ from app.repositories.chat_session_source_repository import (
     get_source_ids_by_session
 )
 
-from app.repositories.message_repository import (
-    create_message
-)
-
 from app.services.llm.rag_service import (
     answer_query
+)
+
+from app.repositories.message_repository import (
+    create_message,
+    get_messages_by_session
 )
 
 
@@ -53,6 +54,21 @@ def send_message(
         session_id
     )
 
+    messages = get_messages_by_session(
+        db,
+        session_id
+    )
+
+    recent_messages = messages[-10:]
+
+    conversation_history = "\n".join(
+        [
+            f"{message.role.capitalize()}: {message.content}"
+            for message in recent_messages
+        ]
+    )
+
+   # save current user message
     create_message(
 
         db,
@@ -72,7 +88,9 @@ def send_message(
 
         user_id=user_id,
 
-        source_ids=source_ids
+        source_ids=source_ids,
+
+        conversation_history=conversation_history
     )
 
     create_message(

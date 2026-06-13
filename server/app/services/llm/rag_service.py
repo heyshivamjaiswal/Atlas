@@ -13,7 +13,8 @@ def answer_query(
     query: str,
     db: Session,
     user_id: int,
-    source_ids: list[int]
+    source_ids: list[int],
+    conversation_history: str
 ):
 
     retrieved = retrieve_chunks(
@@ -47,19 +48,25 @@ def answer_query(
     )
 
     prompt = f"""
-Answer the question using ONLY the provided context.
+You are answering questions about the user's uploaded sources.
 
-If the answer exists in the context, answer directly.
+Use the conversation history for context.
 
-If the answer does not exist in the context, reply exactly:
+Use ONLY the provided document context for factual answers.
+
+If the answer is not present in the context, reply exactly:
 
 Information not found in documents.
 
-Context:
+Conversation History:
+
+{conversation_history}
+
+Document Context:
 
 {context}
 
-Question:
+Current Question:
 
 {query}
 
