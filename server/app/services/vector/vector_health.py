@@ -4,7 +4,6 @@ from app.services.vector.init_qdrant import (
     create_collection
 )
 
-
 COLLECTION_NAME = "atlas_chunks"
 
 
@@ -19,15 +18,27 @@ def ensure_collection_exists():
 
         create_collection()
 
-    count = client.count(
-        collection_name=COLLECTION_NAME,
-        exact=True
-    )
+    try:
 
-    print("\n========== QDRANT ==========")
+        count = client.count(
+            collection_name=COLLECTION_NAME,
+            exact=True
+        )
 
-    print(f"Collection: {COLLECTION_NAME}")
+        print("\n========== QDRANT ==========")
 
-    print(f"Vector Count: {count.count}")
+        print(
+            f"Collection: {COLLECTION_NAME}"
+        )
 
-    print("============================\n")
+        print(
+            f"Vector Count: {count.count}"
+        )
+
+        print("============================\n")
+
+    except Exception as e:
+
+        print(
+            f"[QDRANT] Health check failed: {e}"
+        )
