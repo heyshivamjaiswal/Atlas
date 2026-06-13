@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from contextlib import asynccontextmanager
+
 
 import app.models.user
 import app.models.source
@@ -18,6 +20,10 @@ from app.routes.chat import (
     router as chat_router
 )
 
+from app.services.vector.vector_health import (
+    ensure_collection_exists
+)
+
 import app.models.chat_session
 import app.models.message
 import app.models.chat_session_source
@@ -27,7 +33,16 @@ import app.models.chat_session_source
 Base.metadata.create_all(bind=engine)
 
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+
+    ensure_collection_exists()
+
+    yield
+
+app = FastAPI(
+    lifespan=lifespan
+)
 
 
 @app.get("/")

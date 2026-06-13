@@ -6,6 +6,10 @@ from qdrant_client.models import (
     MatchAny
 )
 
+from app.services.vector.vector_health import (
+    ensure_collection_exists
+)
+
 import uuid
 
 from app.services.vector.qdrant_connection import client
@@ -16,6 +20,7 @@ COLLECTION_NAME = "atlas_chunks"
 def add_vectors(
     chunks
 ):
+    ensure_collection_exists()
 
     points = []
 
