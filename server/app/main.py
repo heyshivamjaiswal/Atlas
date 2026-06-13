@@ -24,10 +24,17 @@ from app.services.vector.vector_health import (
     ensure_collection_exists
 )
 
+from app.core.exception_handlers import (
+    register_exception_handlers
+)
+
 import app.models.chat_session
 import app.models.message
 import app.models.chat_session_source
 
+from app.core.startup_checks import (
+    validate_environment
+)
 
 # Create tables
 Base.metadata.create_all(bind=engine)
@@ -40,9 +47,23 @@ async def lifespan(app: FastAPI):
 
     yield
 
+validate_environment()
+
 app = FastAPI(
     lifespan=lifespan
 )
+
+register_exception_handlers(
+    app
+)
+
+
+@app.get("/")
+def root():
+
+    return {
+        "message": "Atlas backend working"
+    }
 
 
 @app.get("/")

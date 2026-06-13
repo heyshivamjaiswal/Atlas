@@ -2,10 +2,13 @@ from datetime import datetime, timedelta, timezone
 
 from jose import jwt
 
-SECRET_KEY = "atlas-secret-key"
-ALGORITHM = "HS256"
+from app.core.settings import (
+    SECRET_KEY,
+    JWT_ALGORITHM,
+    ACCESS_TOKEN_EXPIRE_MINUTES
+)
 
-ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24
+ALGORITHM = JWT_ALGORITHM
 
 
 def create_access_token(

@@ -108,5 +108,35 @@ def retrieve_chunks(
         )
 
         print("----------------")
+        # BM25 FALLBACK
+
+    if not unique_results and bm25_results:
+
+        print("\n===== BM25 FALLBACK =====")
+
+        class BM25Result:
+
+            def __init__(self, item):
+
+                self.payload = {
+                    "content": item["content"],
+                    "page": item["page"],
+                    "source": "BM25",
+                    "source_id": item["source_id"]
+                }
+
+                self.score = item["score"]
+
+        for item in bm25_results:
+
+            unique_results.append(
+                BM25Result(item)
+            )
+
+            print(
+                item["content"][:300]
+            )
+
+            print("----------------")
 
     return unique_results

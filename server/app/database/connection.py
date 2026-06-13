@@ -1,11 +1,12 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
-
-DATABASE_URL = (
-    "postgresql://atlas:atlas123@127.0.0.1:5433/atlas_db"
+from sqlalchemy.orm import (
+    sessionmaker,
+    declarative_base
 )
 
-print(DATABASE_URL)
+from app.core.settings import (
+    DATABASE_URL
+)
 
 engine = create_engine(
     DATABASE_URL

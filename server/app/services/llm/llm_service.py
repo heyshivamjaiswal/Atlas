@@ -2,8 +2,12 @@ from langchain_ollama import (
     ChatOllama
 )
 
+from app.core.settings import (
+    OLLAMA_CHAT_MODEL
+)
+
 llm = ChatOllama(
-    model="llama3.2:3b"
+    model=OLLAMA_CHAT_MODEL
 )
 
 

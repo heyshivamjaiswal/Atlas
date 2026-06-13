@@ -1,0 +1,37 @@
+from app.core.settings import (
+    DATABASE_URL,
+    SECRET_KEY
+)
+
+
+def validate_environment():
+
+    missing = []
+
+    if not DATABASE_URL:
+        missing.append(
+            "DATABASE_URL"
+        )
+
+    if not SECRET_KEY:
+        missing.append(
+            "SECRET_KEY"
+        )
+
+    if missing:
+
+        raise RuntimeError(
+            f"Missing environment variables: {', '.join(missing)}"
+        )
+
+    print(
+        "\n===== ENVIRONMENT ====="
+    )
+
+    print(
+        "Configuration valid"
+    )
+
+    print(
+        "=======================\n"
+    )
