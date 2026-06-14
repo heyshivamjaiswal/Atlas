@@ -52,3 +52,16 @@ QDRANT_COLLECTION_NAME = os.getenv(
     "QDRANT_COLLECTION_NAME",
     "atlas_chunks"
 )
+
+SUPABASE_URL = os.getenv(
+    "SUPABASE_URL"
+)
+
+SUPABASE_KEY = os.getenv(
+    "SUPABASE_KEY"
+)
+
+SUPABASE_BUCKET = os.getenv(
+    "SUPABASE_BUCKET",
+    "atlas-pdfs"
+)
