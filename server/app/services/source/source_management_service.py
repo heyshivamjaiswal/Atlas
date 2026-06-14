@@ -39,7 +39,7 @@ def list_sources(
 
             "id": source.id,
 
-            "type": source.type,
+            "source_type": source.source_type,
 
             "title": source.title,
 
@@ -76,7 +76,7 @@ def get_source_details(
 
         "id": source.id,
 
-        "type": source.type,
+        "source_type": source.source_type,
 
         "title": source.title,
 

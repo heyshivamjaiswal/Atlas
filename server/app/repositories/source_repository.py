@@ -13,7 +13,7 @@ def create_source(
 
     source = Source(
         user_id=user_id,
-        type=source_type,
+        source_type=source_type,
         title=title,
         file_name=file_name
     )

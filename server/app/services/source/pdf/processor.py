@@ -94,6 +94,9 @@ async def process_pdf(
         mapped_chunks
     )
 
+    print("\n===== EMBEDDINGS =====")
+    print("vectors =", len(vectors))
+
     embedded_chunks = []
 
     for chunk, vector in zip(
@@ -105,6 +108,8 @@ async def process_pdf(
             "embedding": vector
         })
 
+    print("\n===== EMBEDDED CHUNKS =====")
+    print("chunks =", len(embedded_chunks))
     # store vectors in qdrant
     add_vectors(
         embedded_chunks

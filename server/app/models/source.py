@@ -24,7 +24,7 @@ class Source(Base):
         nullable=False
     )
 
-    type = Column(
+    source_type = Column(
         String,
         nullable=False
     )
@@ -35,4 +35,9 @@ class Source(Base):
 
     file_name = Column(
         String
+    )
+
+    storage_key = Column(
+        String(500),
+        nullable=True
     )
