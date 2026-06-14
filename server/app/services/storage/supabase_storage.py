@@ -17,11 +17,11 @@ def upload_pdf(
     content: bytes
 ):
 
-    response = supabase.storage.from_(
+    supabase.storage.from_(
         SUPABASE_BUCKET
     ).upload(
         path=file_name,
         file=content
     )
 
-    return response
+    return file_name

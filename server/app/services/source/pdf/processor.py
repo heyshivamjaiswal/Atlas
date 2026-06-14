@@ -17,6 +17,10 @@ from app.services.source.pdf.storage import (
     save_pdf_file
 )
 
+from app.services.storage.supabase_storage import (
+    upload_pdf
+)
+
 from app.services.source.pdf.chunk_mapper import (
     map_chunks
 )
@@ -49,6 +53,14 @@ async def process_pdf(
         file
     )
 
+    # upload to supabase
+    storage_key = upload_pdf(
+        file.filename,
+        content
+    )
+    print("\n===== STORAGE =====")
+    print(storage_key)
+
     # save pdf locally
     file_path = save_pdf_file(
         file.filename,
@@ -71,7 +83,8 @@ async def process_pdf(
         user_id=user_id,
         source_type="pdf",
         title=file.filename,
-        file_name=file.filename
+        file_name=file.filename,
+        storage_key=storage_key
     )
 
     # map chunks
@@ -110,6 +123,7 @@ async def process_pdf(
 
     print("\n===== EMBEDDED CHUNKS =====")
     print("chunks =", len(embedded_chunks))
+
     # store vectors in qdrant
     add_vectors(
         embedded_chunks

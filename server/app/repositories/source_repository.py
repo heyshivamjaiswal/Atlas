@@ -8,14 +8,16 @@ def create_source(
     user_id: int,
     source_type: str,
     title: str | None,
-    file_name: str | None
+    file_name: str | None,
+    storage_key: str | None = None
 ):
 
     source = Source(
         user_id=user_id,
         source_type=source_type,
         title=title,
-        file_name=file_name
+        file_name=file_name,
+        storage_key=storage_key
     )
 
     db.add(source)
