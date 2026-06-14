@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
 
+
 import os
 from pathlib import Path
 
@@ -29,21 +30,25 @@ ACCESS_TOKEN_EXPIRE_MINUTES = int(
     )
 )
 
-OLLAMA_CHAT_MODEL = os.getenv(
-    "OLLAMA_CHAT_MODEL",
-    "llama3.2:3b"
+GEMINI_API_KEY = os.getenv(
+    "GEMINI_API_KEY"
 )
 
-OLLAMA_EMBEDDING_MODEL = os.getenv(
-    "OLLAMA_EMBEDDING_MODEL",
-    "nomic-embed-text"
+GEMINI_MODEL = os.getenv(
+    "GEMINI_MODEL",
+    "gemini-2.5-flash"
+)
+
+HUGGINGFACE_API_KEY = os.getenv(
+    "HUGGINGFACE_API_KEY"
+)
+
+HF_EMBEDDING_MODEL = os.getenv(
+    "HF_EMBEDDING_MODEL",
+    "BAAI/bge-base-en-v1.5"
 )
 
 QDRANT_COLLECTION_NAME = os.getenv(
     "QDRANT_COLLECTION_NAME",
     "atlas_chunks"
 )
-
-print("ENV FILE =", ENV_FILE)
-print("EXISTS =", ENV_FILE.exists())
-print("DATABASE_URL =", DATABASE_URL)

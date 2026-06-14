@@ -3,6 +3,10 @@ from app.core.settings import (
     SECRET_KEY
 )
 
+from app.core.logger import (
+    logger
+)
+
 
 def validate_environment():
 
@@ -24,14 +28,6 @@ def validate_environment():
             f"Missing environment variables: {', '.join(missing)}"
         )
 
-    print(
-        "\n===== ENVIRONMENT ====="
-    )
-
-    print(
-        "Configuration valid"
-    )
-
-    print(
-        "=======================\n"
+    logger.info(
+        "Environment configuration valid"
     )

@@ -1,13 +1,5 @@
-from langchain_ollama import (
-    ChatOllama
-)
-
-from app.core.settings import (
-    OLLAMA_CHAT_MODEL
-)
-
-llm = ChatOllama(
-    model=OLLAMA_CHAT_MODEL
+from app.services.llm.gemini_service import (
+    ask_gemini
 )
 
 
@@ -15,8 +7,6 @@ def ask_llm(
     prompt: str
 ):
 
-    response = llm.invoke(
+    return ask_gemini(
         prompt
     )
-
-    return response.content

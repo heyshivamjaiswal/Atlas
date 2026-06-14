@@ -6,6 +6,8 @@ from app.services.vector.qdrant_connection import (
     client
 )
 
+from app.core.logger import logger
+
 
 def get_system_health():
 
@@ -22,9 +24,11 @@ def get_system_health():
 
         postgres = "ok"
 
-    except Exception:
+    except Exception as e:
 
-        pass
+        logger.error(
+            f"Postgres health check failed : {e}"
+        )
 
     try:
 
@@ -32,9 +36,11 @@ def get_system_health():
 
         qdrant = "ok"
 
-    except Exception:
+    except Exception as e:
 
-        pass
+        logger.error(
+            f"Qdrant health check failed: {e}"
+        )
 
     return {
 
