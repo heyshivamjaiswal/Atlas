@@ -5,6 +5,8 @@ from fastapi import (
     Depends
 )
 
+from typing import Optional
+
 from sqlalchemy.orm import Session
 
 from app.database.dependencies import get_db
@@ -20,9 +22,12 @@ from app.services.source.source_service import (
 )
 
 from app.services.source.source_management_service import (
-    list_sources,
+
+    list_sources_paginated,
     get_source_details,
-    delete_source_service
+    delete_source_service,
+    get_source_stats,
+    get_source_chunks
 )
 
 from app.schemas.source import WebsiteSource
@@ -77,12 +82,44 @@ def add_youtube(
 
 @router.get("")
 def get_sources_endpoint(
+    search: Optional[str] = None,
+    skip: int = 0,
+    limit: int = 20,
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user)
 ):
 
-    return list_sources(
+    return list_sources_paginated(
         db,
+        current_user.id,
+        search,
+        skip,
+        limit
+    )
+
+
+@router.get("/stats")
+def source_stats(
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user)
+):
+
+    return get_source_stats(
+        db,
+        current_user.id
+    )
+
+
+@router.get("/{source_id}/chunks")
+def get_source_chunks_endpoint(
+    source_id: int,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user)
+):
+
+    return get_source_chunks(
+        db,
+        source_id,
         current_user.id
     )
 

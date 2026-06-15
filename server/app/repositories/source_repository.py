@@ -96,3 +96,50 @@ def delete_sources_by_user_id(
     )
 
     db.commit()
+
+
+def count_sources_by_type(
+    db: Session,
+    user_id: int,
+    source_type: str
+):
+
+    return (
+        db.query(Source)
+        .filter(
+            Source.user_id == user_id,
+            Source.source_type == source_type
+        )
+        .count()
+    )
+
+
+def get_sources_paginated(
+    db: Session,
+    user_id: int,
+    search: str | None,
+    skip: int,
+    limit: int
+):
+
+    query = (
+        db.query(Source)
+        .filter(
+            Source.user_id == user_id
+        )
+    )
+
+    if search:
+
+        query = query.filter(
+            Source.title.ilike(
+                f"%{search}%"
+            )
+        )
+
+    return (
+        query
+        .offset(skip)
+        .limit(limit)
+        .all()
+    )

@@ -4,12 +4,16 @@ from sqlalchemy.orm import Session
 from app.repositories.source_repository import (
     get_sources,
     get_source_by_id_and_user,
-    delete_source as delete_source_record
+    delete_source as delete_source_record,
+    count_sources_by_type,
+    get_sources_paginated
 )
 
 from app.repositories.chunk_repository import (
     count_chunks_by_source_id,
-    delete_chunks_by_source_id
+    delete_chunks_by_source_id,
+    count_all_chunks_by_user,
+    get_chunks_by_source_id
 )
 
 from app.repositories.vector_repository import (
@@ -146,3 +150,120 @@ def delete_source_service(
         "message": "Source deleted successfully",
         "source_id": source_id
     }
+
+
+def get_source_stats(
+    db: Session,
+    user_id: int
+):
+
+    return {
+
+        "total_sources":
+        len(
+            get_sources(
+                db,
+                user_id
+            )
+        ),
+
+        "pdfs":
+        count_sources_by_type(
+            db,
+            user_id,
+            "pdf"
+        ),
+
+        "websites":
+        count_sources_by_type(
+            db,
+            user_id,
+            "website"
+        ),
+
+        "youtube":
+        count_sources_by_type(
+            db,
+            user_id,
+            "youtube"
+        ),
+
+        "total_chunks":
+        count_all_chunks_by_user(
+            db,
+            user_id
+        )
+    }
+
+
+def get_source_chunks(
+    db: Session,
+    source_id: int,
+    user_id: int
+):
+
+    source = get_source_by_id_and_user(
+        db,
+        source_id,
+        user_id
+    )
+
+    if not source:
+
+        raise HTTPException(
+            status_code=404,
+            detail="Source not found"
+        )
+
+    chunks = get_chunks_by_source_id(
+        db,
+        source_id
+    )
+
+    return [
+        {
+            "chunk_index": chunk.chunk_index,
+            "page": chunk.page,
+            "content": chunk.content
+        }
+
+        for chunk in chunks
+    ]
+
+
+def list_sources_paginated(
+    db: Session,
+    user_id: int,
+    search: str | None,
+    skip: int,
+    limit: int
+):
+
+    sources = get_sources_paginated(
+        db,
+        user_id,
+        search,
+        skip,
+        limit
+    )
+
+    result = []
+
+    for source in sources:
+
+        result.append({
+
+            "id": source.id,
+
+            "source_type": source.source_type,
+
+            "title": source.title,
+
+            "chunk_count":
+            count_chunks_by_source_id(
+                db,
+                source.id
+            )
+        })
+
+    return result

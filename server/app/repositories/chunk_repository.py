@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 
 from app.models.chunk import Chunk
+from app.models.source import Source
 
 
 def create_chunks(
@@ -79,6 +80,41 @@ def get_chunks_by_source_ids(
         db.query(Chunk)
         .filter(
             Chunk.source_id.in_(source_ids)
+        )
+        .all()
+    )
+
+
+def count_all_chunks_by_user(
+    db: Session,
+    user_id: int
+):
+
+    return (
+        db.query(Chunk)
+        .join(
+            Source,
+            Source.id == Chunk.source_id
+        )
+        .filter(
+            Source.user_id == user_id
+        )
+        .count()
+    )
+
+
+def get_chunks_by_source_id(
+    db: Session,
+    source_id: int
+):
+
+    return (
+        db.query(Chunk)
+        .filter(
+            Chunk.source_id == source_id
+        )
+        .order_by(
+            Chunk.chunk_index
         )
         .all()
     )

@@ -15,6 +15,9 @@ from app.routes.health import router as health_router
 from app.routes.source import router as source_router
 from app.routes.query import router as query_router
 from app.routes.auth import router as auth_router
+from app.routes.debug import (
+    router as debug_router
+)
 
 from app.routes.chat import (
     router as chat_router
@@ -92,4 +95,9 @@ app.include_router(
 
 app.include_router(
     chat_router
+)
+
+
+app.include_router(
+    debug_router
 )
