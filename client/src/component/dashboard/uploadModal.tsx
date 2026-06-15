@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { uploadPdf, uploadWebsite, uploadYoutube } from '@/lib/source';
 
 import {
   Dialog,
@@ -22,11 +23,35 @@ export default function UploadModal() {
   const [websiteUrl, setWebsiteUrl] = useState('');
   const [youtubeUrl, setYoutubeUrl] = useState('');
   const [file, setFile] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  function handleSubit() {
-    console.log({ source: selectedSource, websiteUrl, youtubeUrl, file });
+  async function handleSubit() {
+    try {
+      setLoading(true);
+
+      if (selectedSource === 'pdf' && file) {
+        await uploadPdf(file);
+      }
+
+      if (selectedSource === 'website') {
+        await uploadWebsite(websiteUrl);
+      }
+
+      if (selectedSource === 'youtube') {
+        await uploadYoutube(youtubeUrl);
+      }
+
+      alert('Source uploaded');
+
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+
+      alert('Upload failed');
+    } finally {
+      setLoading(false);
+    }
   }
-
   const [selectedSource, setSelectedSource] = useState<string | null>(null);
   return (
     <Dialog>
@@ -76,8 +101,9 @@ export default function UploadModal() {
           <Button
             className="mt-6 w-full bg-white text-black "
             onClick={handleSubit}
+            disabled={loading}
           >
-            Submit Source
+            {loading ? 'Uploading...' : 'Submit Source'}
           </Button>
         )}
       </DialogContent>

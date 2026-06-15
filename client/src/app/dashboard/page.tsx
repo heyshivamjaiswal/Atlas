@@ -42,16 +42,20 @@ export default function HomePage() {
       </div>
 
       <div className="grid grid-cols-3 gap-4">
-        {sources.map((source) => (
-          <Document
-            key={source.id}
-            id={source.id}
-            title={source.title}
-            type="PDF"
-            priority="medium"
-            description={`${source.chunk_count} chunks`}
-          />
-        ))}
+        {sources.map((source) => {
+          console.log('SOURCE:', source);
+
+          return (
+            <Document
+              key={source.id}
+              id={source.id}
+              title={source.title}
+              type="PDF"
+              priority="medium"
+              description={`${source.chunk_count} chunks`}
+            />
+          );
+        })}
       </div>
     </div>
   );
