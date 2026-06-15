@@ -25,3 +25,21 @@ def upload_pdf(
     )
 
     return file_name
+
+
+def delete_pdf(
+    storage_key: str
+):
+    try:
+
+        supabase.storage.from_(
+            SUPABASE_BUCKET
+        ).remove([
+            storage_key
+        ])
+
+    except Exception as e:
+
+        print(
+            f"Supabase delete failed: {e}"
+        )

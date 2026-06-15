@@ -20,6 +20,10 @@ from app.repositories.chat_session_source_repository import (
     delete_sessions_by_source
 )
 
+from app.services.storage.supabase_storage import (
+    delete_pdf
+)
+
 
 def list_sources(
     db: Session,
@@ -125,6 +129,12 @@ def delete_source_service(
         db,
         source_id
     )
+
+    if source.storage_key:
+
+        delete_pdf(
+            source.storage_key
+        )
 
     # 4. Delete source
     delete_source_record(
