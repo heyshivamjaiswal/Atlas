@@ -76,10 +76,12 @@ export default function ChatPage({ params }: Props) {
   }
 
   return (
-    <div className="h-full flex">
-      <ChatSidebar />
+    <div className="h-full flex overflow-hidden">
+      <div className="w-72 shrink-0 border-r border-border overflow-y-auto">
+        <ChatSidebar />
+      </div>
 
-      <div className="flex-1 flex flex-col p-8">
+      <div className="flex-1 flex flex-col p-8 min-h-0 overflow-hidden">
         {/* Header */}
         <div>
           <h1 className="text-3xl font-semibold">{chat.title}</h1>
@@ -90,7 +92,7 @@ export default function ChatPage({ params }: Props) {
         </div>
 
         {/* Messages */}
-        <div className="mt-8 flex-1 min-h-0 overflow-y-auto rounded-xl border border-border bg-card/30 p-6">
+        <div className="mt-8 flex-1 overflow-y-auto rounded-xl border border-border bg-card/30 p-6">
           <div className="space-y-6">
             {chat.messages.length === 0 && (
               <div className="text-center text-muted-foreground py-12">
@@ -118,25 +120,27 @@ export default function ChatPage({ params }: Props) {
         </div>
 
         {/* Input */}
-        <div className="mt-4 flex gap-3 border-t border-border pt-4">
-          <Input
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Ask about this document..."
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' && !sending) {
-                handleSend();
-              }
-            }}
-          />
+        <div className="mt-4 flex gap-3 border-t border-border pt-4 shrink-0 bg-background">
+          <div className="flex gap-3">
+            <Input
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Ask about this document..."
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !sending) {
+                  handleSend();
+                }
+              }}
+            />
 
-          <Button
-            onClick={handleSend}
-            disabled={sending}
-            className="bg-white text-black"
-          >
-            {sending ? 'Sending...' : 'Send'}
-          </Button>
+            <Button
+              onClick={handleSend}
+              disabled={sending}
+              className="bg-white text-black"
+            >
+              {sending ? 'Sending...' : 'Send'}
+            </Button>
+          </div>
         </div>
       </div>
     </div>
