@@ -2,9 +2,14 @@
 
 import { useEffect, useState } from 'react';
 
-import { getSource, getSourceChunks } from '@/lib/source';
+import { getSource } from '@/lib/source';
 
-import { SourceDetails, SourceChunk } from '@/types/source';
+import { SourceDetails } from '@/types/source';
+
+import { Button } from '@/components/ui/button';
+
+import { createChat } from '@/lib/chat';
+import { useRouter } from 'next/navigation';
 
 type Props = {
   params: Promise<{
@@ -13,9 +18,9 @@ type Props = {
 };
 
 export default function SourcePage({ params }: Props) {
-  const [source, setSource] = useState<SourceDetails | null>(null);
+  const router = useRouter();
 
-  const [chunks, setChunks] = useState<SourceChunk[]>([]);
+  const [source, setSource] = useState<SourceDetails | null>(null);
 
   const [loading, setLoading] = useState(true);
 
@@ -26,10 +31,7 @@ export default function SourcePage({ params }: Props) {
       try {
         const sourceData = await getSource(Number(id));
 
-        const chunkData = await getSourceChunks(Number(id));
-
         setSource(sourceData);
-        setChunks(chunkData);
       } catch (error) {
         console.error(error);
       } finally {
@@ -48,6 +50,18 @@ export default function SourcePage({ params }: Props) {
     return <div className="p-8">Source not found</div>;
   }
 
+  async function handleStartChat() {
+    if (!source) return;
+
+    try {
+      const chat = await createChat(source.title, [source.id]);
+
+      router.push(`/dashboard/chat/${chat.id}`);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <div className="p-8 space-y-8">
       <div>
@@ -62,19 +76,29 @@ export default function SourcePage({ params }: Props) {
         </p>
       </div>
 
-      <div className="space-y-4">
-        {chunks.map((chunk) => (
-          <div
-            key={chunk.chunk_index}
-            className="border border-border rounded-lg p-4"
-          >
-            <div className="text-xs text-muted-foreground mb-2">
-              Page {chunk.page} • Chunk {chunk.chunk_index}
-            </div>
+      <Button className="bg-white text-black" onClick={handleStartChat}>
+        Start Chat
+      </Button>
 
-            <p className="text-sm whitespace-pre-wrap">{chunk.content}</p>
-          </div>
-        ))}
+      <div className="rounded-lg border border-border p-6">
+        <h2 className="text-lg font-medium">Source Information</h2>
+
+        <div className="mt-4 space-y-2 text-sm">
+          <p>
+            <span className="text-muted-foreground">Type:</span>{' '}
+            {source.source_type.toUpperCase()}
+          </p>
+
+          <p>
+            <span className="text-muted-foreground">Chunks:</span>{' '}
+            {source.chunk_count}
+          </p>
+
+          <p>
+            <span className="text-muted-foreground">File:</span>{' '}
+            {source.file_name}
+          </p>
+        </div>
       </div>
     </div>
   );

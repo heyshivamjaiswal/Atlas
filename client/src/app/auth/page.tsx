@@ -17,7 +17,11 @@ export default function AuthPage() {
         </p>
 
         <div className="mt-6">
-          {mode === 'login' ? <LoginForm /> : <SignupForm />}
+          {mode === 'login' ? (
+            <LoginForm />
+          ) : (
+            <SignupForm onSuccess={() => setMode('login')} />
+          )}
         </div>
 
         <button

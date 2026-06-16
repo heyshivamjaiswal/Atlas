@@ -9,7 +9,6 @@ type Documentprops = {
   id: number;
   title: string;
   type: DocumentType;
-  priority: PriorityType;
   description: string;
 };
 
@@ -17,7 +16,6 @@ export default function Document({
   id,
   title,
   type,
-  priority,
   description,
 }: Documentprops) {
   return (
@@ -32,10 +30,8 @@ export default function Document({
             </div>
             <Badge variant="secondary">{type}</Badge>
           </div>
-          <PriorityDot priority={priority} />
         </div>
         <p className="text-sm text-muted-foreground mt-3">{description}</p>
-        <p className="mt-5 text-sm text-muted-foreground">Updated recently</p>
       </Card>
     </Link>
   );
