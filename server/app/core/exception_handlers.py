@@ -22,15 +22,8 @@ def register_exception_handlers(
         exc: Exception
     ):
 
-        print(
-            "\n===== UNHANDLED EXCEPTION ====="
-        )
 
         traceback.print_exc()
-
-        print(
-            "===============================\n"
-        )
 
         return JSONResponse(
 
