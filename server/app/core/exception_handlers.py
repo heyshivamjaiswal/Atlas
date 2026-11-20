@@ -4,7 +4,7 @@ from fastapi import (
 )
 
 from fastapi.responses import (
-    JSONResponse
+    JSONResponse 
 )
 
 import traceback
